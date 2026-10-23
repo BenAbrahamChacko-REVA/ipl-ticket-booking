@@ -2,532 +2,870 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPL Ticket Booking</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPL Ticket Booking System</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 25px;
-            background: #f3f4f6;
-            color: #222;
-        }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f9;
+      color: #202938;
+      line-height: 1.6;
+    }
 
-        h1 {
-            color: #163b73;
-        }
+    header {
+      background: #102a56;
+      color: white;
+      text-align: center;
+      padding: 24px 16px;
+    }
 
-        .section {
-            background: white;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
+    header h1 {
+      margin: 0 0 6px;
+    }
 
-        label {
-            display: block;
-            margin-top: 12px;
-            font-weight: bold;
-        }
+    header p {
+      margin: 0;
+      color: #d9e5ff;
+    }
 
-        input, select {
-            display: block;
-            width: 100%;
-            max-width: 400px;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #bbb;
-            border-radius: 4px;
-        }
+    main {
+      width: min(1100px, 94%);
+      margin: 25px auto;
+    }
 
-        button {
-            padding: 10px 16px;
-            margin-top: 15px;
-            margin-right: 8px;
-            border: none;
-            border-radius: 4px;
-            background: #163b73;
-            color: white;
-            cursor: pointer;
-        }
+    .panel {
+      background: white;
+      padding: 24px;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #0000000c;
+    }
 
-        button[type="reset"] {
-            background: #666;
-        }
+    h2 {
+      margin-top: 0;
+      color: #102a56;
+    }
 
-        .error {
-            display: block;
-            color: #d00000;
-            font-size: 13px;
-            margin-top: 4px;
-        }
+    .table-wrapper {
+      overflow-x: auto;
+    }
 
-        .invalid {
-            border: 2px solid #d00000;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
 
-        #message {
-            font-weight: bold;
-            color: green;
-        }
+    th, td {
+      border: 1px solid #dce2eb;
+      padding: 11px;
+      text-align: left;
+      white-space: nowrap;
+    }
 
-        .table-wrap {
-            overflow-x: auto;
-        }
+    th {
+      background: #eaf0fb;
+      color: #102a56;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 12px;
-            background: white;
-        }
+    tbody tr:nth-child(even) {
+      background: #f8faff;
+    }
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
 
-        th {
-            background: #163b73;
-            color: white;
-        }
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
+    .field.full-width {
+      grid-column: 1 / -1;
+    }
 
-            .section {
-                padding: 14px;
-            }
-        }
-    </style>
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #bdc7d6;
+      border-radius: 6px;
+      font-size: 15px;
+      background: white;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #9cbcf8;
+      border-color: #2459b3;
+    }
+
+    .invalid {
+      border: 2px solid #d93025 !important;
+      background: #fff7f6;
+    }
+
+    .error {
+      color: #d93025;
+      font-size: 13px;
+      min-height: 20px;
+    }
+
+    .summary {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 8px;
+      background: #eef4ff;
+      border-left: 4px solid #2459b3;
+    }
+
+    .summary p {
+      margin: 5px 0;
+    }
+
+    .total {
+      font-size: 22px;
+      font-weight: bold;
+      color: #102a56;
+    }
+
+    button {
+      padding: 11px 17px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .primary-button {
+      background: #174ea6;
+      color: white;
+      margin-top: 16px;
+    }
+
+    .primary-button:hover {
+      background: #103879;
+    }
+
+    .secondary-button {
+      background: #e5eaf2;
+      color: #202938;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .success-message {
+      display: none;
+      padding: 14px;
+      margin-top: 18px;
+      background: #e8f7ec;
+      border: 1px solid #9bd5a8;
+      border-radius: 8px;
+      color: #17652a;
+    }
+
+    .empty-message {
+      color: #64748b;
+      padding: 15px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+    }
+
+    @media (max-width: 650px) {
+      .form-grid, .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
+  <header>
     <h1>IPL Ticket Booking System</h1>
-    <p>Book tickets, validate details and view confirmed bookings.</p>
+    <p>Explore matches, book tickets and manage your bookings</p>
+  </header>
 
-    <section class="section">
-        <h2>Match Schedule</h2>
+  <main>
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Match ID</th>
-                        <th>Teams</th>
-                        <th>Date</th>
-                        <th>Venue</th>
-                    </tr>
-                </thead>
+    <!-- 1. MATCH SCHEDULE -->
+    <section class="panel">
+      <h2>1. IPL Match Schedule</h2>
 
-                <tbody>
-                    <tr>
-                        <td>M101</td>
-                        <td>RCB vs CSK</td>
-                        <td>10 May</td>
-                        <td>Bengaluru</td>
-                    </tr>
-                    <tr>
-                        <td>M102</td>
-                        <td>MI vs KKR</td>
-                        <td>12 May</td>
-                        <td>Mumbai</td>
-                    </tr>
-                    <tr>
-                        <td>M103</td>
-                        <td>GT vs SRH</td>
-                        <td>14 May</td>
-                        <td>Ahmedabad</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Match ID</th>
+              <th>Match</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+      <p class="empty-message">
+        Sample schedule for demonstrating the booking workflow.
+      </p>
     </section>
 
-    <section class="section">
-        <h2>Book Tickets</h2>
+    <!-- 2. BOOKING FORM -->
+    <section class="panel">
+      <h2>2. Book Your Tickets</h2>
 
-        <form id="bookingForm" novalidate>
+      <form id="bookingForm" novalidate>
+        <div class="form-grid">
 
-            <label for="name">Full Name *</label>
-            <input id="name" type="text" placeholder="Enter your name">
-            <span class="error" id="nameError"></span>
+          <div class="field">
+            <label for="customerName">Full Name *</label>
+            <input
+              type="text"
+              id="customerName"
+              placeholder="Enter your full name"
+              autocomplete="name"
+            >
+            <span class="error" id="customerNameError"></span>
+          </div>
 
+          <div class="field">
             <label for="email">Email Address *</label>
-            <input id="email" type="text" placeholder="example@email.com">
+            <input
+              type="email"
+              id="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+            >
             <span class="error" id="emailError"></span>
+          </div>
 
-            <label for="phone">Phone Number *</label>
-            <input id="phone" type="text"
-                   inputmode="numeric"
-                   placeholder="10-digit Indian mobile number">
+          <div class="field">
+            <label for="phone">Mobile Number *</label>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="10-digit Indian mobile number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+            >
             <span class="error" id="phoneError"></span>
+          </div>
 
+          <div class="field">
             <label for="match">Select Match *</label>
             <select id="match">
-                <option value="">-- Select Match --</option>
-                <option value="M101">RCB vs CSK</option>
-                <option value="M102">MI vs KKR</option>
-                <option value="M103">GT vs SRH</option>
+              <option value="">-- Choose a match --</option>
             </select>
             <span class="error" id="matchError"></span>
+          </div>
 
-            <label for="stand">Ticket Type *</label>
+          <div class="field">
+            <label for="stand">Ticket Stand *</label>
             <select id="stand">
-                <option value="">-- Select Ticket Type --</option>
-                <option value="General">General - Rs. 1000</option>
-                <option value="Premium">Premium - Rs. 2000</option>
-                <option value="VIP">VIP - Rs. 3500</option>
+              <option value="">-- Choose a stand --</option>
+              <option value="General">General - ₹1,000</option>
+              <option value="Premium">Premium - ₹2,000</option>
+              <option value="VIP">VIP - ₹3,500</option>
             </select>
             <span class="error" id="standError"></span>
+          </div>
 
-            <label for="tickets">Number of Tickets *</label>
-            <input id="tickets" type="number" min="1" max="10" value="1">
-            <span class="error" id="ticketsError"></span>
+          <div class="field">
+            <label for="quantity">Number of Tickets *</label>
+            <input
+              type="number"
+              id="quantity"
+              min="1"
+              max="10"
+              value="1"
+            >
+            <span class="error" id="quantityError"></span>
+          </div>
 
-            <p>Total Amount: Rs. <span id="total">0</span></p>
+        </div>
 
-            <button type="submit">Confirm Booking</button>
-            <button type="reset">Clear Form</button>
+        <!-- 3. DYNAMIC BOOKING SUMMARY -->
+        <div class="summary" aria-live="polite">
+          <h3>Booking Summary</h3>
+          <p>Match: <strong id="summaryMatch">Not selected</strong></p>
+          <p>Stand: <strong id="summaryStand">Not selected</strong></p>
+          <p>Price per ticket: <strong id="summaryPrice">₹0</strong></p>
+          <p>Quantity: <strong id="summaryQuantity">1</strong></p>
+          <p class="total">Total: <span id="summaryTotal">₹0</span></p>
+        </div>
 
-            <p id="message" aria-live="polite"></p>
-        </form>
+        <button type="submit" class="primary-button">
+          Confirm Booking
+        </button>
+
+        <div
+          id="successMessage"
+          class="success-message"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </form>
     </section>
 
-    <section class="section">
-        <h2>Confirmed Bookings</h2>
+    <!-- 4. CONFIRMED BOOKINGS -->
+    <section class="panel">
+      <h2>3. Confirmed Bookings</h2>
 
-        <label for="filterMatch">Filter by Match</label>
-        <select id="filterMatch">
-            <option value="All">All Matches</option>
-            <option value="M101">RCB vs CSK</option>
-            <option value="M102">MI vs KKR</option>
-            <option value="M103">GT vs SRH</option>
-        </select>
+      <div class="filter-grid">
+        <div class="field">
+          <label for="filterMatch">Filter by Match</label>
+          <select id="filterMatch">
+            <option value="">All Matches</option>
+          </select>
+        </div>
 
-        <label for="filterStand">Filter by Ticket Type</label>
-        <select id="filterStand">
-            <option value="All">All Types</option>
+        <div class="field">
+          <label for="filterStand">Filter by Stand</label>
+          <select id="filterStand">
+            <option value="">All Stands</option>
             <option value="General">General</option>
             <option value="Premium">Premium</option>
             <option value="VIP">VIP</option>
-        </select>
-
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Match</th>
-                        <th>Type</th>
-                        <th>Tickets</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-
-                <tbody id="bookingTable"></tbody>
-            </table>
+          </select>
         </div>
+      </div>
+
+      <button type="button" class="secondary-button" id="clearFilters">
+        Clear Filters
+      </button>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Match</th>
+              <th>Stand</th>
+              <th>Tickets</th>
+              <th>Total</th>
+              <th>Booking Time</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody"></tbody>
+        </table>
+      </div>
+
+      <p id="bookingCount">Total bookings displayed: 0</p>
     </section>
 
-    <script>
-        const prices = {
-            General: 1000,
-            Premium: 2000,
-            VIP: 3500
-        };
+  </main>
 
-        const matches = {
-            M101: "RCB vs CSK",
-            M102: "MI vs KKR",
-            M103: "GT vs SRH"
-        };
+  <footer>
+    IPL Ticket Booking System | Client-Side Demonstration
+  </footer>
 
-        let bookings = [];
+  <script>
+    "use strict";
 
-        try {
-            bookings = JSON.parse(
-                localStorage.getItem("iplBookings") || "[]"
-            );
+    // -----------------------------------------
+    // 1. DATA AND CONFIGURATION
+    // -----------------------------------------
 
-            if (!Array.isArray(bookings)) {
-                bookings = [];
-            }
-        } catch (error) {
-            bookings = [];
-        }
+    const matches = [
+      {
+        id: "M101",
+        home: "RCB",
+        away: "CSK",
+        date: "10 May",
+        venue: "Bengaluru"
+      },
+      {
+        id: "M102",
+        home: "MI",
+        away: "KKR",
+        date: "12 May",
+        venue: "Mumbai"
+      },
+      {
+        id: "M103",
+        home: "GT",
+        away: "SRH",
+        date: "14 May",
+        venue: "Ahmedabad"
+      }
+    ];
 
-        const fields = [
-            "name", "email", "phone",
-            "match", "stand", "tickets"
-        ];
+    const ticketPrices = {
+      General: 1000,
+      Premium: 2000,
+      VIP: 3500
+    };
 
-        function showError(field, message) {
-            document.getElementById(field + "Error").textContent = message;
+    const STORAGE_KEY = "iplBookings";
 
-            document.getElementById(field).classList.add("invalid");
+    const form = document.getElementById("bookingForm");
+    const nameInput = document.getElementById("customerName");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const matchInput = document.getElementById("match");
+    const standInput = document.getElementById("stand");
+    const quantityInput = document.getElementById("quantity");
 
-            document.getElementById(field).setAttribute(
-                "aria-invalid", "true"
-            );
-        }
+    const successMessage = document.getElementById("successMessage");
+    const scheduleBody = document.getElementById("scheduleBody");
+    const bookingsBody = document.getElementById("bookingsBody");
 
-        function clearError(field) {
-            document.getElementById(field + "Error").textContent = "";
+    // -----------------------------------------
+    // 2. REUSABLE HELPER FUNCTIONS
+    // -----------------------------------------
 
-            document.getElementById(field).classList.remove("invalid");
+    function formatCurrency(amount) {
+      return "₹" + amount.toLocaleString("en-IN");
+    }
 
-            document.getElementById(field).removeAttribute("aria-invalid");
-        }
+    function getMatch(matchId) {
+      return matches.find(match => match.id === matchId);
+    }
 
-        function validateField(field) {
-            const value = document.getElementById(field).value.trim();
+    function getMatchName(matchId) {
+      const match = getMatch(matchId);
 
-            if (field === "name") {
-                if (value === "") {
-                    showError(field, "Name is required.");
-                } else {
-                    clearError(field);
-                }
-            }
+      return match
+        ? `${match.home} vs ${match.away}`
+        : "Unknown match";
+    }
 
-            if (field === "email") {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    function getTicketPrice(stand) {
+      return ticketPrices[stand] || 0;
+    }
 
-                if (value === "") {
-                    showError(field, "Email is required.");
-                } else if (!emailRegex.test(value)) {
-                    showError(field, "Enter a valid email address.");
-                } else {
-                    clearError(field);
-                }
-            }
-
-            if (field === "phone") {
-                const phoneRegex = /^[6-9]\d{9}$/;
-
-                if (value === "") {
-                    showError(field, "Phone number is required.");
-                } else if (!phoneRegex.test(value)) {
-                    showError(
-                        field,
-                        "Enter a valid 10-digit Indian mobile number."
-                    );
-                } else {
-                    clearError(field);
-                }
-            }
-
-            if (field === "match") {
-                if (value === "") {
-                    showError(field, "Please select a match.");
-                } else {
-                    clearError(field);
-                }
-            }
-
-            if (field === "stand") {
-                if (value === "") {
-                    showError(field, "Please select a ticket type.");
-                } else {
-                    clearError(field);
-                }
-            }
-
-            if (field === "tickets") {
-                const count = Number(value);
-
-                if (
-                    value === "" ||
-                    !Number.isInteger(count) ||
-                    count < 1 ||
-                    count > 10
-                ) {
-                    showError(
-                        field,
-                        "Enter a whole number between 1 and 10."
-                    );
-                } else {
-                    clearError(field);
-                }
-            }
-        }
-
-        function validateForm() {
-            fields.forEach(validateField);
-
-            return fields.every(function(field) {
-                return document.getElementById(
-                    field + "Error"
-                ).textContent === "";
-            });
-        }
-
-        function updateTotal() {
-            const stand = document.getElementById("stand").value;
-            const count = Number(
-                document.getElementById("tickets").value
-            );
-
-            if (
-                prices[stand] &&
-                Number.isInteger(count) &&
-                count >= 1 &&
-                count <= 10
-            ) {
-                document.getElementById("total").textContent =
-                    prices[stand] * count;
-            } else {
-                document.getElementById("total").textContent = "0";
-            }
-        }
-
-        function confirmBooking(event) {
-            event.preventDefault();
-
-            if (!validateForm()) {
-                document.getElementById("message").textContent = "";
-                return;
-            }
-
-            const matchId = document.getElementById("match").value;
-            const stand = document.getElementById("stand").value;
-            const count = Number(
-                document.getElementById("tickets").value
-            );
-
-            const booking = {
-                id: "IPL" + Date.now(),
-                name: document.getElementById("name").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                phone: document.getElementById("phone").value.trim(),
-                matchId: matchId,
-                match: matches[matchId],
-                stand: stand,
-                tickets: count,
-                total: prices[stand] * count
-            };
-
-            bookings.push(booking);
-
-            try {
-                localStorage.setItem(
-                    "iplBookings",
-                    JSON.stringify(bookings)
-                );
-
-                sessionStorage.setItem(
-                    "lastBooking",
-                    JSON.stringify(booking)
-                );
-            } catch (error) {
-                bookings.pop();
-                alert("Unable to save the booking in this browser.");
-                return;
-            }
-
-            document.getElementById("message").textContent =
-                "Booking confirmed! Booking ID: " + booking.id;
-
-            showBookings();
-        }
-
-        function showBookings() {
-            const table = document.getElementById("bookingTable");
-            const filterMatch =
-                document.getElementById("filterMatch").value;
-            const filterStand =
-                document.getElementById("filterStand").value;
-
-            table.innerHTML = "";
-
-            const filtered = bookings.filter(function(booking) {
-                return (
-                    (filterMatch === "All" ||
-                        booking.matchId === filterMatch) &&
-                    (filterStand === "All" ||
-                        booking.stand === filterStand)
-                );
-            });
-
-            filtered.forEach(function(booking) {
-                const row = table.insertRow();
-
-                [
-                    booking.id,
-                    booking.name,
-                    booking.email || "-",
-                    booking.phone || "-",
-                    booking.match,
-                    booking.stand,
-                    booking.tickets,
-                    "Rs. " + booking.total
-                ].forEach(function(value) {
-                    row.insertCell().textContent = value;
-                });
-            });
-        }
-
-        fields.forEach(function(field) {
-            document.getElementById(field).addEventListener(
-                "input",
-                function() {
-                    validateField(field);
-                    updateTotal();
-                }
-            );
-
-            document.getElementById(field).addEventListener(
-                "change",
-                function() {
-                    validateField(field);
-                    updateTotal();
-                }
-            );
-        });
-
-        document.getElementById("bookingForm").addEventListener(
-            "submit",
-            confirmBooking
+    function getBookings() {
+      try {
+        const saved = JSON.parse(
+          localStorage.getItem(STORAGE_KEY) || "[]"
         );
 
-        document.getElementById("bookingForm").addEventListener(
-            "reset",
-            function() {
-                setTimeout(function() {
-                    fields.forEach(clearError);
+        return Array.isArray(saved) ? saved : [];
+      } catch (error) {
+        console.error("Could not read saved bookings:", error);
+        return [];
+      }
+    }
 
-                    document.getElementById("message").textContent = "";
+    function saveBookings(bookings) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+    }
 
-                    updateTotal();
-                }, 0);
-            }
-        );
+    // -----------------------------------------
+    // 3. RENDER THE MATCH SCHEDULE
+    // -----------------------------------------
 
-        document.getElementById("filterMatch").addEventListener(
-            "change", showBookings
-        );
+    function renderSchedule() {
+      scheduleBody.innerHTML = matches.map(match => `
+        <tr>
+          <td>${match.id}</td>
+          <td>${match.home} vs ${match.away}</td>
+          <td>${match.date}</td>
+          <td>${match.venue}</td>
+          <td>
+            <button
+              type="button"
+              class="secondary-button"
+              data-match-id="${match.id}"
+            >
+              Book
+            </button>
+          </td>
+        </tr>
+      `).join("");
 
-        document.getElementById("filterStand").addEventListener(
-            "change", showBookings
-        );
+      // Populate the booking and filter dropdowns.
+      const options = matches.map(match => `
+        <option value="${match.id}">
+          ${match.home} vs ${match.away} - ${match.venue}
+        </option>
+      `).join("");
 
-        updateTotal();
-        showBookings();
-    </script>
+      matchInput.insertAdjacentHTML("beforeend", options);
 
+      document.getElementById("filterMatch")
+        .insertAdjacentHTML("beforeend", options);
+    }
+
+    // Select a match directly from the schedule.
+    scheduleBody.addEventListener("click", event => {
+      const button = event.target.closest("[data-match-id]");
+
+      if (!button) return;
+
+      matchInput.value = button.dataset.matchId;
+      updateSummary();
+      clearFieldError("match");
+
+      document.getElementById("bookingForm").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    // -----------------------------------------
+    // 4. DYNAMIC BOOKING SUMMARY
+    // -----------------------------------------
+
+    function updateSummary() {
+      const match = getMatch(matchInput.value);
+      const stand = standInput.value;
+      const price = getTicketPrice(stand);
+
+      const rawQuantity = Number(quantityInput.value);
+      const quantity = Number.isFinite(rawQuantity) ? rawQuantity : 0;
+      const total = price * quantity;
+
+      document.getElementById("summaryMatch").textContent =
+        match ? `${match.home} vs ${match.away}` : "Not selected";
+
+      document.getElementById("summaryStand").textContent =
+        stand || "Not selected";
+
+      document.getElementById("summaryPrice").textContent =
+        formatCurrency(price);
+
+      document.getElementById("summaryQuantity").textContent =
+        String(quantity);
+
+      document.getElementById("summaryTotal").textContent =
+        formatCurrency(total);
+    }
+
+    [matchInput, standInput, quantityInput].forEach(input => {
+      input.addEventListener("change", updateSummary);
+      input.addEventListener("input", updateSummary);
+    });
+
+    // -----------------------------------------
+    // 5. REUSABLE VALIDATION FUNCTIONS
+    // -----------------------------------------
+
+    function showFieldError(fieldId, message) {
+      const input = document.getElementById(fieldId);
+      const error = document.getElementById(fieldId + "Error");
+
+      input.classList.add("invalid");
+      input.setAttribute("aria-invalid", "true");
+      error.textContent = message;
+    }
+
+    function clearFieldError(fieldId) {
+      const input = document.getElementById(fieldId);
+      const error = document.getElementById(fieldId + "Error");
+
+      input.classList.remove("invalid");
+      input.setAttribute("aria-invalid", "false");
+      error.textContent = "";
+    }
+
+    function validateField(fieldId) {
+      const value = document.getElementById(fieldId).value.trim();
+      let message = "";
+
+      switch (fieldId) {
+        case "customerName":
+          if (!value) {
+            message = "Please enter your full name.";
+          } else if (value.length < 2) {
+            message = "Name must contain at least 2 characters.";
+          }
+          break;
+
+        case "email":
+          if (!value) {
+            message = "Please enter your email address.";
+          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            message = "Please enter a valid email address.";
+          }
+          break;
+
+        case "phone":
+          if (!value) {
+            message = "Please enter your mobile number.";
+          } else if (!/^[6-9]\d{9}$/.test(value)) {
+            message = "Enter a valid 10-digit Indian mobile number.";
+          }
+          break;
+
+        case "match":
+          if (!value || !getMatch(value)) {
+            message = "Please select a valid match.";
+          }
+          break;
+
+        case "stand":
+          if (!Object.hasOwn(ticketPrices, value)) {
+            message = "Please select a ticket stand.";
+          }
+          break;
+
+        case "quantity": {
+          const quantity = Number(value);
+
+          if (
+            value === "" ||
+            !Number.isInteger(quantity) ||
+            quantity < 1 ||
+            quantity > 10
+          ) {
+            message = "Choose between 1 and 10 tickets.";
+          }
+          break;
+        }
+      }
+
+      if (message) {
+        showFieldError(fieldId, message);
+        return false;
+      }
+
+      clearFieldError(fieldId);
+      return true;
+    }
+
+    const validatedFields = [
+      "customerName",
+      "email",
+      "phone",
+      "match",
+      "stand",
+      "quantity"
+    ];
+
+    validatedFields.forEach(fieldId => {
+      const input = document.getElementById(fieldId);
+
+      input.addEventListener("input", () => {
+        validateField(fieldId);
+        successMessage.style.display = "none";
+      });
+
+      input.addEventListener("change", () => {
+        validateField(fieldId);
+        successMessage.style.display = "none";
+      });
+    });
+
+    function validateForm() {
+      return validatedFields
+        .map(validateField)
+        .every(isValid => isValid);
+    }
+
+    // -----------------------------------------
+    // 6. GENERATE A UNIQUE BOOKING ID
+    // -----------------------------------------
+
+    function generateBookingId() {
+      const bookings = getBookings();
+
+      let bookingId;
+
+      do {
+        const randomPart = Math.random()
+          .toString(36)
+          .substring(2, 8)
+          .toUpperCase();
+
+        bookingId = "IPL-" + Date.now().toString(36).toUpperCase()
+          + "-" + randomPart;
+      } while (bookings.some(
+        booking => booking.id === bookingId
+      ));
+
+      return bookingId;
+    }
+
+    // -----------------------------------------
+    // 7. CREATE AND CONFIRM A BOOKING
+    // -----------------------------------------
+
+    function createBooking() {
+      const match = getMatch(matchInput.value);
+      const stand = standInput.value;
+      const quantity = Number(quantityInput.value);
+      const price = getTicketPrice(stand);
+
+      return {
+        id: generateBookingId(),
+        customerName: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        matchId: match.id,
+        matchName: `${match.home} vs ${match.away}`,
+        venue: match.venue,
+        stand: stand,
+        quantity: quantity,
+        pricePerTicket: price,
+        total: price * quantity,
+        bookedAt: new Date().toLocaleString()
+      };
+    }
+
+    function confirmBooking(event) {
+      event.preventDefault();
+
+      successMessage.style.display = "none";
+
+      if (!validateForm()) {
+        const firstInvalid = document.querySelector(".invalid");
+
+        if (firstInvalid) {
+          firstInvalid.focus();
+        }
+
+        return;
+      }
+
+      const booking = createBooking();
+      const bookings = getBookings();
+
+      bookings.push(booking);
+      saveBookings(bookings);
+
+      // Keep the latest booking in session storage as well.
+      sessionStorage.setItem(
+        "lastBooking",
+        JSON.stringify(booking)
+      );
+
+      successMessage.textContent =
+        `Booking confirmed! Your booking ID is ${booking.id}. ` +
+        `Total payable: ${formatCurrency(booking.total)}.`;
+
+      successMessage.style.display = "block";
+
+      renderBookings();
+
+      // Reset the form after successful booking.
+      form.reset();
+      quantityInput.value = "1";
+
+      validatedFields.forEach(clearFieldError);
+      updateSummary();
+
+      successMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }
+
+    form.addEventListener("submit", confirmBooking);
+
+    // -----------------------------------------
+    // 8. FILTER AND DISPLAY CONFIRMED BOOKINGS
+    // -----------------------------------------
+
+    function getFilteredBookings() {
+      const selectedMatch =
+        document.getElementById("filterMatch").value;
+
+      const selectedStand =
+        document.getElementById("filterStand").value;
+
+      return getBookings().filter(booking => {
+        const matchesMatch =
+          !selectedMatch || booking.matchId === selectedMatch;
+
+        const matchesStand =
+          !selectedStand || booking.stand === selectedStand;
+
+        return matchesMatch && matchesStand;
+      });
+    }
+
+    function renderBookings() {
+      const bookings = getFilteredBookings();
+
+      document.getElementById("bookingCount").textContent =
+        `Total bookings displayed: ${bookings.length}`;
+
+      if (bookings.length === 0) {
+        bookingsBody.innerHTML = `
+          <tr>
+            <td colspan="7">No bookings found.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      bookingsBody.innerHTML = bookings.map(booking => `
+        <tr>
+          <td>${escapeHTML(booking.id)}</td>
+          <td>${escapeHTML(booking.customerName)}</td>
+          <td>${escapeHTML(booking.matchName)}</td>
+          <td>${escapeHTML(booking.stand)}</td>
+          <td>${booking.quantity}</td>
+          <td>${formatCurrency(booking.total)}</td>
+          <td>${escapeHTML(booking.bookedAt)}</td>
+        </tr>
+      `).join("");
+    }
+
+    // Escape user-provided text before inserting it into HTML.
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    document.getElementById("filterMatch")
+      .addEventListener("change", renderBookings);
+
+    document.getElementById("filterStand")
+      .addEventListener("change", renderBookings);
+
+    document.getElementById("clearFilters").addEventListener("click", () => {
+      document.getElementById("filterMatch").value = "";
+      document.getElementById("filterStand").value = "";
+      renderBookings();
+    });
+
+    // -----------------------------------------
+    // 9. INITIALIZE THE APPLICATION
+    // -----------------------------------------
+
+    function initializeApp() {
+      renderSchedule();
+      updateSummary();
+      renderBookings();
+    }
+
+    initializeApp();
+  </script>
 </body>
 </html>
